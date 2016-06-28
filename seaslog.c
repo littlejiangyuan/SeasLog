@@ -118,6 +118,7 @@ const zend_function_entry seaslog_functions[] = {
     }
 };
 
+//声明Zend函数块
 const zend_function_entry seaslog_methods[] = {
     PHP_ME(SEASLOG_RES_NAME, __construct,   NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
     PHP_ME(SEASLOG_RES_NAME, __destruct,    NULL, ZEND_ACC_PUBLIC | ZEND_ACC_DTOR)
@@ -148,6 +149,7 @@ const zend_function_entry seaslog_methods[] = {
     }
 };
 
+//声明Zend模块扩展结构
 zend_module_entry seaslog_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
     STANDARD_MODULE_HEADER,
