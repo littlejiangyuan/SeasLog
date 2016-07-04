@@ -98,6 +98,7 @@ static void process_event(int event_type, int type, char * error_filename, uint 
 static void initErrorHooks(TSRMLS_D);
 static void recoveryErrorHooks(TSRMLS_D);
 
+//声明全局变量
 ZEND_DECLARE_MODULE_GLOBALS(seaslog)
 
 static int le_seaslog;
@@ -110,6 +111,11 @@ static zend_bool use_buffer = 0;
 static int buffer_size = 0;
 static int level = 0;
 
+/* 一个#表示把参数变成一个字符串，用##把两个宏参数贴合在一起
+ * #define ZEND_FE(name, arg_info)						ZEND_FENTRY(name, ZEND_FN(name), arg_info, 0)
+ * #define ZEND_ME(classname, name, arg_info, flags)	ZEND_FENTRY(name, ZEND_MN(classname##_##name), arg_info, flags)
+ * #define ZEND_FENTRY(zend_name, name, arg_info, flags)	{ #zend_name, name, arg_info, (zend_uint) (sizeof(arg_info)/sizeof(struct _zend_arg_info)-1), flags },
+ */
 const zend_function_entry seaslog_functions[] = {
     PHP_FE(seaslog_get_version, NULL)
     PHP_FE(seaslog_get_author,  NULL)
@@ -118,10 +124,10 @@ const zend_function_entry seaslog_functions[] = {
     }
 };
 
-//声明Zend函数块
+//声明Zend函数块, 类方法
 const zend_function_entry seaslog_methods[] = {
-    PHP_ME(SEASLOG_RES_NAME, __construct,   NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
-    PHP_ME(SEASLOG_RES_NAME, __destruct,    NULL, ZEND_ACC_PUBLIC | ZEND_ACC_DTOR)
+    PHP_ME(SEASLOG_RES_NAME, __construct,   NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR) //ZEND_ACC_CTOR 声明是构造函数
+    PHP_ME(SEASLOG_RES_NAME, __destruct,    NULL, ZEND_ACC_PUBLIC | ZEND_ACC_DTOR) //ZEND_ACC_DTOR 声明是析构函数
 
     PHP_ME(SEASLOG_RES_NAME, setBasePath,   NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
     PHP_ME(SEASLOG_RES_NAME, getBasePath,   NULL, ZEND_ACC_PUBLIC | ZEND_ACC_STATIC)
